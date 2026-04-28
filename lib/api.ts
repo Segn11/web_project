@@ -252,9 +252,17 @@ export async function getProducts(): Promise<Product[]> {
   return await initProducts();
 }
 
-export async function getProduct(id: string | number): Promise<Product> {
-  const product = await requestJson<BackendProduct>(`/products/${id}/`, { includeAuth: false });
-  return mapProduct(product);
+export async function getProduct(id: string | number): Promise<Product | null> {
+  try {
+    const product = await requestJson<BackendProduct>(`/products/${id}/`, { includeAuth: false });
+    return mapProduct(product);
+  } catch (err: any) {
+    const msg = String(err?.message || '').toLowerCase();
+    if (msg.includes('no product matches') || msg.includes('not found') || msg.includes('404')) {
+      return null;
+    }
+    throw err;
+  }
 }
 
 export async function getCategories(): Promise<string[]> {

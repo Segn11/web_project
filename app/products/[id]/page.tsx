@@ -39,9 +39,14 @@ export default function ProductDetailsPage() {
           getProduct(id),
           getProducts()
         ]);
+
         setProduct(productData);
-        trackProductView(productData);
-        setSimilarProducts(getSimilarProducts(productData, allProducts));
+        if (productData) {
+          trackProductView(productData);
+          setSimilarProducts(getSimilarProducts(productData, allProducts));
+        } else {
+          setSimilarProducts([]);
+        }
       } catch (error) {
         console.error('Failed to fetch product details', error);
       } finally {
