@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { useAuth } from '@/context/AuthContext';
 import { useCart } from '@/context/CartContext';
 import { ShoppingCart, User, Search, Menu, LogOut } from 'lucide-react';
@@ -27,7 +28,15 @@ export function Navbar() {
       <div className="container mx-auto flex h-16 items-center justify-between px-4 md:px-6">
         <div className="flex items-center gap-6">
           <Link href="/" className="flex items-center gap-2">
-            <span className="text-xl font-bold tracking-tight">LUMIÈRE</span>
+            <Image
+              src="/images/gebiya.png"
+              alt="Gebiya logo"
+              width={36}
+              height={36}
+              className="h-9 w-9 rounded-full object-cover"
+              priority
+            />
+            <span className="text-xl font-bold tracking-tight">Gebiya</span>
           </Link>
           <div className="hidden md:flex gap-4">
             <Link href="/products" className="text-sm font-medium text-zinc-600 hover:text-zinc-900">

@@ -1,6 +1,6 @@
-# Lumiere E-Commerce
+# Gebiya E-Commerce
 
-Lumiere E-Commerce is a polished full-stack commerce platform built with Next.js and Django REST Framework. It pairs a modern storefront with JWT-based authentication, structured commerce APIs, and a Gemini-powered shopping assistant to create a production-ready shopping experience for both customers and administrators.
+Gebiya E-Commerce is a polished full-stack commerce platform built with Next.js and Django REST Framework. It pairs a modern storefront with JWT-based authentication, structured commerce APIs, and a Gemini-powered shopping assistant to create a production-ready shopping experience for both customers and administrators.
 
 ## Overview
 

@@ -50,7 +50,7 @@ async function sendWithRetry(chat: any, userMessage: string): Promise<string> {
     } catch (error) {
       const isLastAttempt = attempt === delays.length - 1;
       if (!isTemporaryModelUnavailable(error) || isLastAttempt) {
-        throw error;
+        throw error instanceof Error ? error : new Error(String(error));
       }
     }
   }
@@ -62,7 +62,7 @@ export function Chatbot() {
   const { accessToken } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
-    { role: 'model', text: 'Hi! I am the Lumière assistant. How can I help you today?' }
+    { role: 'model', text: 'Hi! I am the Gebiya assistant. How can I help you today?' }
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -85,7 +85,7 @@ export function Chatbot() {
       chatRef.current = aiRef.current.chats.create({
         model: 'gemini-3-flash-preview',
         config: {
-          systemInstruction: 'You are a helpful customer support assistant for Lumière, a modern e-commerce store selling electronics, jewelry, and clothing. Be concise, friendly, and helpful. Keep responses short.',
+          systemInstruction: 'You are a helpful customer support assistant for Gebiya, a modern e-commerce store selling electronics, jewelry, and clothing. Be concise, friendly, and helpful. Keep responses short.',
         }
       });
     }
@@ -110,7 +110,7 @@ export function Chatbot() {
           activeSession = await createChatSession({
             accessToken,
             clientId: clientIdRef.current,
-            title: 'Lumiere assistant chat',
+            title: 'Gebiya assistant chat',
             metadata: { source: 'web-chatbot' },
           });
         }
@@ -171,7 +171,7 @@ export function Chatbot() {
         const session = await createChatSession({
           accessToken,
           clientId: clientIdRef.current || getOrCreateChatClientId(),
-          title: 'Lumiere assistant chat',
+          title: 'Gebiya assistant chat',
           metadata: { source: 'web-chatbot' },
         });
         activeSessionId = session.id;
@@ -226,7 +226,7 @@ export function Chatbot() {
         <div className="flex items-center justify-between border-b bg-zinc-950 p-4 text-white">
           <div className="flex items-center gap-2">
             <MessageCircle className="h-5 w-5" />
-            <h3 className="font-medium">Lumière Assistant</h3>
+            <h3 className="font-medium">Gebiya Assistant</h3>
           </div>
           <Button
             variant="ghost"

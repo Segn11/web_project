@@ -162,7 +162,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       writeMockUsers([
         {
           id: 'admin-1',
-          email: 'admin@lumiere.com',
+          email: 'admin@gebiya.com',
           name: 'Admin',
           password: 'AdminPassword123!',
           role: 'admin',

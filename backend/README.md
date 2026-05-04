@@ -1,6 +1,6 @@
 # Backend Service Guide
 
-Django REST backend for the Lumiere Commerce Platform.
+Django REST backend for the Gebiya Commerce Platform.
 
 This service is responsible for authentication, authorization, catalog management, and all persistent commerce data in PostgreSQL.
 

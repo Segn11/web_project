@@ -55,6 +55,22 @@ interface BackendWishlistItem {
   product: BackendProduct;
 }
 
+interface BackendOrderItem {
+  id: number;
+  product: BackendProduct | number;
+  product_name: string;
+  unit_price: string;
+  quantity: number;
+}
+
+interface BackendOrder {
+  id: number;
+  created_at: string;
+  total: string;
+  status: string;
+  items?: BackendOrderItem[];
+}
+
 interface BackendListResponse<T> {
   results: T[];
 }
@@ -139,15 +155,21 @@ async function requestJson<T>(path: string, options?: ApiRequestOptions): Promis
           : getAuthHeaders())
       : {};
 
-    const response = await fetch(`${API_BASE_URL}${path}`, {
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        ...authHeader,
-        ...(requestInit.headers || {}),
-      },
-      ...requestInit,
-    });
+    let response: Response;
+    try {
+      response = await fetch(`${API_BASE_URL}${path}`, {
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          ...authHeader,
+          ...(requestInit.headers || {}),
+        },
+        ...requestInit,
+      });
+    } catch (fetchErr: any) {
+      const message = fetchErr instanceof Error ? fetchErr.message : String(fetchErr);
+      throw new Error(`Network request failed for ${path}: ${message}`);
+    }
 
     const text = await response.text();
     let payload: unknown = null;
@@ -237,15 +259,33 @@ function mapProduct(product: BackendProduct, categoryMap?: Map<number, string>):
 async function initProducts(): Promise<Product[]> {
   if (typeof window === 'undefined') return [];
 
-  const [response, categoriesResponse] = await Promise.all([
-    requestJson<BackendProductListResponse | BackendProduct[]>('/products/', { includeAuth: false }),
-    requestJson<BackendCategoryListResponse | BackendCategory[]>('/categories/', { includeAuth: false }),
-  ]);
+  // Try once, with a single retry for transient backend failures that return
+  // non-JSON responses (for example, Django OperationalError HTML pages).
+  for (let attempt = 0; attempt < 2; attempt += 1) {
+    try {
+      const [response, categoriesResponse] = await Promise.all([
+        requestJson<BackendProductListResponse | BackendProduct[]>('/products/', { includeAuth: false }),
+        requestJson<BackendCategoryListResponse | BackendCategory[]>('/categories/', { includeAuth: false }),
+      ]);
 
-  const categories = Array.isArray(categoriesResponse) ? categoriesResponse : categoriesResponse.results;
-  const categoryMap = new Map<number, string>(categories.map((category) => [category.id, category.slug || category.name]));
-  const products = Array.isArray(response) ? response : response.results;
-  return products.map((product) => mapProduct(product, categoryMap));
+      const categories = Array.isArray(categoriesResponse) ? categoriesResponse : categoriesResponse.results;
+      const categoryMap = new Map<number, string>(categories.map((category) => [category.id, category.slug || category.name]));
+      const products = Array.isArray(response) ? response : response.results;
+      return products.map((product) => mapProduct(product, categoryMap));
+    } catch (err: any) {
+      const msg = String(err?.message || '').toLowerCase();
+      // If this is a fatal application error (not a transient DB/network error), rethrow.
+      // For common backend HTML error responses include a defensive fallback instead of crashing.
+      if (attempt === 1) {
+        console.error('initProducts failed after retry:', err);
+        return [];
+      }
+      console.warn('initProducts attempt failed, retrying once:', err);
+      // small backoff before retry
+      await new Promise((r) => setTimeout(r, 500));
+    }
+  }
+  return [];
 }
 
 export async function getProducts(): Promise<Product[]> {
@@ -261,7 +301,7 @@ export async function getProduct(id: string | number): Promise<Product | null> {
     if (msg.includes('no product matches') || msg.includes('not found') || msg.includes('404')) {
       return null;
     }
-    throw err;
+    throw err instanceof Error ? err : new Error(String(err));
   }
 }
 
@@ -333,8 +373,8 @@ export async function createOrder(payload: {
   });
 }
 
-export async function getOrders() {
-  return requestJson('/orders/');
+export async function getOrders(): Promise<BackendListResponse<BackendOrder> | BackendOrder[]> {
+  return requestJson<BackendListResponse<BackendOrder> | BackendOrder[]>('/orders/');
 }
 
 function normalizeList<T>(response: BackendListResponse<T> | T[]): T[] {

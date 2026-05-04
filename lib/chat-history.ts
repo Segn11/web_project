@@ -225,7 +225,7 @@ export async function createChatSession(params: {
     method: 'POST',
     headers,
     body: JSON.stringify({
-      title: params.title || 'Lumiere assistant chat',
+      title: params.title || 'Gebiya assistant chat',
       metadata: params.metadata || {},
     }),
   });

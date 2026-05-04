@@ -27,9 +27,14 @@ export default function ProfilePage() {
   const [newProduct, setNewProduct] = useState({ title: '', price: '', description: '', category: '', image: '' });
 
   const loadAdminData = useCallback(async () => {
-    const prods = await getProducts();
-    setProducts(prods);
-    setUsers(getAllUsers());
+    try {
+      const prods = await getProducts();
+      setProducts(prods);
+      setUsers(getAllUsers());
+    } catch (error) {
+      console.error('Failed to load admin data', error);
+      toast.error('Failed to load admin dashboard data');
+    }
   }, [getAllUsers]);
 
   const loadOrders = useCallback(async () => {
@@ -63,7 +68,7 @@ export default function ProfilePage() {
     } else if (user) {
       if (user.role === 'admin') {
         // eslint-disable-next-line react-hooks/set-state-in-effect
-        loadAdminData();
+        void loadAdminData();
       }
       void loadOrders();
     }
