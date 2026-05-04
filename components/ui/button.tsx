@@ -8,12 +8,12 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-zinc-900 text-zinc-50 hover:bg-zinc-900/90",
+        default: "bg-sky-600 text-white hover:bg-sky-700",
         destructive: "bg-red-500 text-zinc-50 hover:bg-red-500/90",
-        outline: "border border-zinc-200 bg-white hover:bg-zinc-100 hover:text-zinc-900",
-        secondary: "bg-zinc-100 text-zinc-900 hover:bg-zinc-100/80",
-        ghost: "hover:bg-zinc-100 hover:text-zinc-900",
-        link: "text-zinc-900 underline-offset-4 hover:underline",
+        outline: "border border-sky-200 bg-white hover:bg-sky-50 hover:text-sky-900",
+        secondary: "bg-sky-100 text-sky-900 hover:bg-sky-200",
+        ghost: "hover:bg-sky-50 hover:text-sky-900",
+        link: "text-sky-700 underline-offset-4 hover:underline",
       },
       size: {
         default: "h-10 px-4 py-2",

@@ -223,7 +223,7 @@ export function Chatbot() {
         }`}
       >
         {/* Header */}
-        <div className="flex items-center justify-between border-b bg-zinc-950 p-4 text-white">
+        <div className="flex items-center justify-between border-b bg-gradient-to-r from-cyan-700 via-sky-700 to-blue-800 p-4 text-white">
           <div className="flex items-center gap-2">
             <MessageCircle className="h-5 w-5" />
             <h3 className="font-medium">Gebiya Assistant</h3>

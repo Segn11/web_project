@@ -11,12 +11,16 @@ import { ChatbotHost } from '@/components/ChatbotHost';
 export const metadata: Metadata = {
   title: 'Gebiya | Modern E-Commerce',
   description: 'A modern e-commerce experience built with React and Tailwind CSS.',
+  icons: {
+    icon: '/images/gebiya.png',
+    apple: '/images/gebiya.png',
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className="min-h-screen bg-white text-zinc-950 antialiased flex flex-col" suppressHydrationWarning>
+      <body className="min-h-screen bg-gradient-to-b from-sky-50 via-cyan-50 to-white text-slate-900 antialiased flex flex-col" suppressHydrationWarning>
         <AuthProvider>
           <WishlistProvider>
             <CartProvider>

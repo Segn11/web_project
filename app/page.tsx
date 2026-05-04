@@ -35,8 +35,8 @@ export default function HomePage() {
   return (
     <div className="flex flex-col gap-16 pb-16">
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-zinc-950 text-white">
-        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center opacity-30 mix-blend-overlay" />
+      <section className="relative overflow-hidden bg-gradient-to-br from-cyan-700 via-sky-700 to-blue-900 text-white">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(255,255,255,0.22),_transparent_38%),radial-gradient(circle_at_bottom_right,_rgba(125,211,252,0.16),_transparent_32%)]" />
         <div className="container relative mx-auto flex min-h-[600px] flex-col items-center justify-center px-4 text-center md:px-6">
           <h1 className="max-w-4xl text-5xl font-bold tracking-tight sm:text-6xl md:text-7xl lg:text-8xl">
             Elevate Your <br className="hidden sm:block" /> Everyday Style
@@ -46,12 +46,12 @@ export default function HomePage() {
           </p>
           <div className="mt-10 flex flex-col gap-4 sm:flex-row">
             <Link href="/products">
-              <Button size="lg" className="h-14 w-full rounded-full bg-white px-8 text-base text-zinc-950 hover:bg-zinc-100 sm:w-auto">
+              <Button size="lg" className="h-14 w-full rounded-full bg-white px-8 text-base text-sky-900 hover:bg-sky-50 sm:w-auto">
                 Shop Collection
               </Button>
             </Link>
             <Link href="/products?category=electronics">
-              <Button size="lg" variant="outline" className="h-14 w-full rounded-full border-zinc-700 bg-zinc-900/50 px-8 text-base backdrop-blur-md hover:bg-zinc-800 sm:w-auto">
+              <Button size="lg" variant="outline" className="h-14 w-full rounded-full border-white/25 bg-white/10 px-8 text-base text-white backdrop-blur-md hover:bg-white/20 sm:w-auto">
                 Explore Electronics
               </Button>
             </Link>
